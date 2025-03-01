@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Communication</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1504307651254-35680f356dfd');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .container h2 {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid rgba(244, 164, 96, 0.3);
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.85);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            display: block;
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #f4a460;
+            box-shadow: 0 0 8px rgba(244, 164, 96, 0.4);
+        }
+
+        .submit-btn {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f4a460;
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background-color: #e5915c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Communication</h2>
+        <form id="communicationForm" action="/communication" method="POST">
+            <div class="form-group">
+                <label for="constructorName" class="required-field">Constructor Name</label>
+                <input type="text" id="constructorName" name="constructorName" required 
+                    placeholder="Enter constructor's full name" 
+                    value="<%= locals.constructorName || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="ownerName" class="required-field">Owner Name</label>
+                <input type="text" id="ownerName" name="ownerName" required 
+                    placeholder="Enter owner's full name"
+                    value="<%= locals.ownerName || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="progressUpdate" class="required-field">Construction Progress Update</label>
+                <textarea id="progressUpdate" name="progressUpdate" rows="3" required 
+                    placeholder="Provide detailed progress update"><%= locals.progressUpdate || '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="demands">Demands or Requests</label>
+                <textarea id="demands" name="demands" rows="3" 
+                    placeholder="List any specific demands or requests"><%= locals.demands || '' %></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="budgetIncrease" class="required-field">Budget Increase Request (INR)</label>
+                <input type="number" id="budgetIncrease" name="budgetIncrease" required min="0" 
+                    placeholder="Enter amount in INR"
+                    value="<%= locals.budgetIncrease || '' %>">
+            </div>
+
+            <div class="form-group">
+                <label for="reason" class="required-field">Reason for Budget Increase</label>
+                <textarea id="reason" name="reason" rows="3" required 
+                    placeholder="Provide detailed explanation for budget increase"><%= locals.reason || '' %></textarea>
+            </div>
+
+            <% if (locals.error) { %>
+                <div class="error-message" style="color: red; font-weight: bold;">
+                    <%= error %>
+                </div>
+            <% } %>
+
+            <button type="submit" class="submit-btn">Submit Communication</button>
+        </form>
+    </div>
+</body>
+</html>

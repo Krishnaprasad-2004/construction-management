@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Registration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-4.0.3');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin: 20px;
+        }
+        h2 {
+            text-align: center;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            background: #cd9b12;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration</h2>
+        <form action="/register" method="post">
+            <label>Owner Name:</label>
+            <input type="text" name="ownerName" required>
+        
+            <label>Username:</label>
+            <input type="text" name="username" required>
+        
+            <label>Password:</label>
+            <input type="password" name="password" required>
+        
+            <label>Project Type:</label>
+            <select name="projectType">
+                <option value="residential">Residential</option>
+                <option value="commercial">Commercial</option>
+                <option value="industrial">Industrial</option>
+            </select>
+        
+            <label>Budget (INR):</label>
+            <input type="number" name="budget" required>
+        
+            <label>Location:</label>
+            <input type="text" name="location" required>
+        
+            <label>Specific Needs:</label>
+            <textarea name="specificNeeds" rows="4"></textarea>
+        
+            <button type="submit">Register</button>
+        </form>
+        
+    </div>
+
+    <script>
+        document.getElementById("ownerRequirementsForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            const password = document.getElementById("password").value;
+            const retypePassword = document.getElementById("retypePassword").value;
+            if (password !== retypePassword) {
+                alert("Passwords do not match. Please try again.");
+                return;
+            }
+            alert("Owner requirements registered successfully!");
+        });
+    </script>
+</body>
+</html>

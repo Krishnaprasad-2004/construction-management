@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page - Construction Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: white;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;  
+            padding: 20px;
+            border-radius: 8px;
+        }
+        label {
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: blue;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        async function processPayment(event) {
+            event.preventDefault();
+            const fullName = document.getElementById("fullName").value;
+            const phone = document.getElementById("phone").value;
+            const amount = document.getElementById("amount").value;
+
+            if (!fullName || !phone || !amount) {
+                alert("Please fill all fields.");
+                return;
+            }
+
+            try {
+                const orderResponse = await fetch("/payment/orders", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ amount })
+                });
+
+                const orderData = await orderResponse.json();
+
+                const options = {
+                    "key": "rzp_test_NsB3oPpNOVdgRa",
+                    "amount": orderData.amount,
+                    "currency": "INR",
+                    "name": "Construction Management",
+                    "description": "Payment for construction project",
+                    "order_id": orderData.id,
+                    "handler": async function (response) {
+                        const verifyResponse = await fetch("/payment/success", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                order_id: orderData.id,
+                                payment_id: response.razorpay_payment_id,
+                                signature: response.razorpay_signature
+                            })
+                        });
+
+                        const verifyData = await verifyResponse.json();
+                        alert(verifyData.msg);
+                    },
+                    "prefill": {
+                        "name": fullName,
+                    },
+                    "theme": { "color": "#007bff" }
+                };
+
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+            } catch (error) {
+                console.error("Payment error:", error);
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Online Payment</h2>
+        <form onsubmit="processPayment(event)">
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" required>
+
+            <label for="amount">Payment Amount (₹):</label>
+            <input type="number" id="amount" required>
+
+            <button type="submit">Proceed to Payment</button>
+        </form>
+    </div>
+</body>
+</html>
